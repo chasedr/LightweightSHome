@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50520
 File Encoding         : 65001
 
-Date: 2017-07-27 20:45:26
+Date: 2017-07-28 21:04:33
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -20,8 +20,7 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS `dairy`;
 CREATE TABLE `dairy` (
-  `D_Id` char(8) NOT NULL,
-  `D_Object` char(8) NOT NULL,
+  `D_Id` int(8) NOT NULL AUTO_INCREMENT COMMENT '自增长',
   `D_Addr` varchar(2) NOT NULL,
   `D_Opreate` varchar(14) DEFAULT NULL,
   `D_Oprtime` datetime DEFAULT NULL,
@@ -37,16 +36,16 @@ CREATE TABLE `dairy` (
 -- ----------------------------
 DROP TABLE IF EXISTS `light`;
 CREATE TABLE `light` (
-  `L_Id` char(8) NOT NULL,
+  `L_Id` int(8) NOT NULL AUTO_INCREMENT COMMENT '自增长',
   `L_Addr` varchar(2) NOT NULL,
-  `L_Tone` varchar(2) NOT NULL,
-  `L_Bright` varchar(2) NOT NULL,
+  `L_Tone` int(2) NOT NULL,
+  `L_Bright` int(2) NOT NULL,
   `L_Starttime` time DEFAULT NULL,
   `L_Endtime` time DEFAULT NULL,
   `L_Issmart` int(1) DEFAULT NULL,
   `L_FitBright` varchar(2) DEFAULT NULL,
   PRIMARY KEY (`L_Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10004 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of light
@@ -57,7 +56,7 @@ CREATE TABLE `light` (
 -- ----------------------------
 DROP TABLE IF EXISTS `wind`;
 CREATE TABLE `wind` (
-  `W_Id` char(8) NOT NULL,
+  `W_Id` int(8) NOT NULL AUTO_INCREMENT COMMENT '自增长',
   `W_Addr` varchar(2) NOT NULL,
   `W_Speed` int(4) NOT NULL,
   `W_Hometemp` float(8,0) NOT NULL,
