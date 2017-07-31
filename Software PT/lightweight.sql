@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50520
 File Encoding         : 65001
 
-Date: 2017-07-28 21:04:33
+Date: 2017-07-31 19:42:19
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -43,9 +43,9 @@ CREATE TABLE `light` (
   `L_Starttime` time DEFAULT NULL,
   `L_Endtime` time DEFAULT NULL,
   `L_Issmart` int(1) DEFAULT NULL,
-  `L_FitBright` varchar(2) DEFAULT NULL,
+  `L_FitBright` int(2) DEFAULT NULL,
   PRIMARY KEY (`L_Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10004 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of light
