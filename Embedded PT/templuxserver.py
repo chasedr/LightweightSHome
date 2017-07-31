@@ -52,7 +52,12 @@ def connectDatabase(hostname,passwd,db):
 def writeData(conn,addr,funccode,data):
 	cursor = conn.cursor()
 	conn.ping(True)
-	sql = """insert into light(L_Addr,L_Tone,L_Bright)value("""+addr+""",0,"""+data+""")"""
+	if funccode == '2':
+		print "insert into table light;"
+		sql = """insert into light(L_Addr,L_Tone,L_Bright)value("""+addr+""",0,"""+data+""")"""
+	elif funccode == '1':	
+		print "insert into table wind;"
+		sql = """insert into wind(W_Addr,W_Speed,W_Hometemp)value("""+addr+""",0,"""+data+""")"""
 	try:
 		cursor.execute(sql)
 		cursor.close()
