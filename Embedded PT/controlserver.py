@@ -11,7 +11,7 @@ import os
 
 #HOST = "192.168.189.128"
 #HOST = "172.17.134.240"
-HOST = "192.168.254.128"
+HOST = "192.168.1.103"
 PORT = 60000 
 
 def sigint_handler(signum,frame):
@@ -45,8 +45,8 @@ class ThreadHandle(threading.Thread):
 def decode(buff):
 	#crc
 	print "buff's size is:" ,str(len(buff))
-	head,addr,repeat,funccode,lux,time,crc,end = struct.unpack("!HHBBHLHH",buff[0:16])
-	return addr,funccode,lux
+	head,addr,repeat,funccode,crc,end = struct.unpack("!HHBBHHH",buff[0:10])
+	return addr,funccode
 
 def connectDatabase(hostname,passwd,db):
 	conn = MySQLdb.connect(hostname,"root",passwd,db)
@@ -78,6 +78,9 @@ def sendCommand(c,addr):
 	print "connection and address is" ,c ,addr
 	databuff = c.recv(1024)
 	remoteSocketBuff[0].send(databuff)
+	databuff = remoteSocketBuff[0].recv(1024)
+	addr,funccode,data = decode(databuff)
+	print "address,funccode:",addr,funccode
 
 def keepAlive(c,addr):
 	print "connection and address is",c,addr
