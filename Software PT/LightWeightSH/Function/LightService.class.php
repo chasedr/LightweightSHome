@@ -17,11 +17,12 @@ class LightService
     function SetLight($L_Addr, $L_Tone, $L_Bright)
     {
         $sql = "insert into light (L_Addr,L_Tone,L_Bright) values (" . $L_Addr .",". $L_Tone .",". $L_Bright  . ")";
-        echo $sql;
         $sqlHelper = new SqlHelper();
         if ($sqlHelper->execute_dml($sql) == 0) {
+            $sqlHelper->close_connect();
             exit();
         }
+        $sqlHelper->close_connect();
     }
 }
 ?>
