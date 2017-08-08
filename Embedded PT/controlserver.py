@@ -3,13 +3,15 @@
 
 import socket
 import threading
+import thread
 import MySQLdb
 import time
 import struct
+import os
 
 #HOST = "192.168.189.128"
 #HOST = "172.17.134.240"
-HOST = "192.168.0.11"
+HOST = "192.168.254.128"
 PORT = 60000 
 
 def sigint_handler(signum,frame):
@@ -72,29 +74,41 @@ def writeData(conn,addr,funccode,data):
 #		time.sleep(5)
 		conn.close()
 
-def createThreadHandle(c,addr):
-	print 'address is:' ,addr
+def sendCommand(c,addr):
+	print "connection and address is" ,c ,addr
 	databuff = c.recv(1024)
-	addr,funccode,data = decode(databuff)
-	
-	conn = connectDatabase("localhost","123456","SHomeDB")
-	writeData(conn,str(addr),str(funccode),str(data))
-	
-	c.send('OK')
-	c.close()
+	remoteSocketBuff[0].send(databuff)
+
+def keepAlive(c,addr):
+	print "connection and address is",c,addr
+	while (True):
+		time.sleep(5)
+
+remoteSocketBuff = []
+def listenRemote(c,addr):
+	s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+	s.bind((HOST,PORT))
+	s.listen(5)
+	while(True):
+		c,address = s.accept()
+		thread.start_new_thread(keepAlive,(c,address,))
+		remoteSocketBuff.append(c)
+
+def listenLocal(c,addr):
+	s = socket.socket(socket.AF_UNIX,socket.SOCK_STREAM)
+	if os.path.exists("/tmp/temp.sock"):
+		os.unlink("/tmp/temp.sock")
+	s.bind("/tmp/temp.sock")
+	s.listen(5)
+	while(True):
+		c,address = s.accept()
+		thread.start_new_thread(sendCommand,(c,address))
 
 def startServer(host,port):
-	s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-	s.bind((host,port))
-	s.listen(5)
-	print host,port
-	threadID = 0
+	thread.start_new_thread(listenLocal,(123,123,))
+	thread.start_new_thread(listenRemote,(123,123,))
 	while(True):
-		c, addr = s.accept()
-		thread = ThreadHandle(threadID,"ThreadHandle",c,addr)
-		thread.start()
-		threadID = threadID + 1
-#		thread.start_new_thread(createThreadHandle,(c,addr,))
+		time.sleep(5)
 
 
 startServer(HOST,PORT)
