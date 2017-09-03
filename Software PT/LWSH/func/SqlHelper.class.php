@@ -5,7 +5,7 @@ class SqlHelper
 
     private $conn;
 
-    private $dbname = "lightweight";
+    private $dbname = "lightweight1.0";
 
     private $username = "root";
 
