@@ -8,8 +8,9 @@ import time
 import struct
 
 #HOST = "192.168.189.128"
+HOST = "192.168.215.128"
 #HOST = "172.17.134.240"
-HOST = "192.168.0.11"
+#HOST = "192.168.0.11"
 PORT = 60000 
 
 def sigint_handler(signum,frame):
@@ -32,9 +33,9 @@ class ThreadHandle(threading.Thread):
 		addr,funccode,data = decode(databuff)
 		
 		#print addr,funccode,data
-		conn = connectDatabase("localhost","123456","SHomeDB")
+		#conn = connectDatabase("localhost","123456","SHomeDB")
 		print "addr,funcode,data",addr,funccode,data
-		writeData(conn,str(addr),str(funccode),str(data))
+		#writeData(conn,str(addr),str(funccode),str(data))
 	
 		self.c.send('OK')
 		self.c.close()
@@ -43,8 +44,16 @@ class ThreadHandle(threading.Thread):
 def decode(buff):
 	#crc
 	print "buff's size is:" ,str(len(buff))
-	head,addr,repeat,funccode,lux,time,crc,end = struct.unpack("!HHBBHLHH",buff[0:16])
-	return addr,funccode,lux
+	head,length,addrhigh,addrlow,repeat,funccode = struct.unpack("!HBLLBB",buff[0:13])
+	if(funccode == 0x02):
+		head,length,addrhigh,addrlow,repeat,funccode,lux,timehigh,timelow,crc = struct.unpack("!HBLLBBHLLH",buff[0:25])
+		return (addrhigh<<32)+addrlow,funccode,lux 
+	elif(funccode == 0x08):
+		head,length,addr,repeat,funccode,infrared,time,crc = struct.unpack("!HBQBBBQH",buff[0:24])
+		return addr,funccode,infrared
+	print "unpack failed,buff[12]=",str(funccode)
+	return 0,0,0
+		
 
 def connectDatabase(hostname,passwd,db):
 	conn = MySQLdb.connect(hostname,"root",passwd,db)

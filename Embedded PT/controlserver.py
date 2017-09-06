@@ -11,7 +11,8 @@ import os
 
 #HOST = "192.168.189.128"
 #HOST = "172.17.134.240"
-HOST = "192.168.1.103"
+#HOST = "192.168.1.103"
+HOST = "192.168.99.181"
 PORT = 60000 
 
 def sigint_handler(signum,frame):
