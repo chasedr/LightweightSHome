@@ -8,10 +8,11 @@ import time
 import struct
 
 #HOST = "192.168.189.128"
-HOST = "192.168.215.128"
+#HOST = "192.168.215.128"
 #HOST = "172.17.134.240"
 #HOST = "192.168.0.11"
-PORT = 60000 
+HOST= "192.168.1.105"
+PORT = 12313 
 
 def sigint_handler(signum,frame):
 	global is_sigint_up
